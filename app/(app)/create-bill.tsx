@@ -77,6 +77,23 @@ export default function CreateBillScreen() {
         </View>
 
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          {/* AI Scanner Section */}
+          <TouchableOpacity 
+            style={styles.scannerBtn}
+            onPress={() => {
+              Alert.alert('AI Scanner (Simulasi)', 'Kamera akan terbuka di sini. Sistem OCR akan mendeteksi nama makanan dan harga secara otomatis dari foto struk restoran Anda.');
+            }}
+          >
+            <View style={styles.scannerIconBg}>
+              <Feather name="camera" size={24} color="#fff" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.scannerTitle}>Scan Struk Cerdas (AI)</Text>
+              <Text style={styles.scannerSubtitle}>Biarkan AI menginput tagihan Anda</Text>
+            </View>
+            <Feather name="chevron-right" size={20} color={Colors.textMuted} />
+          </TouchableOpacity>
+
           {/* Amount Section */}
           <View style={styles.amountContainer}>
             <Text style={styles.currencyLabel}>{currency.code} ({currency.symbol})</Text>
@@ -222,6 +239,34 @@ const styles = StyleSheet.create({
     padding: 24,
     paddingTop: 10,
     paddingBottom: 120,
+  },
+  scannerBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(59, 130, 246, 0.3)',
+    padding: 16,
+    borderRadius: 20,
+  },
+  scannerIconBg: {
+    backgroundColor: '#3B82F6',
+    width: 48,
+    height: 48,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  scannerTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Colors.text,
+  },
+  scannerSubtitle: {
+    fontSize: 12,
+    color: '#3B82F6',
+    marginTop: 2,
   },
   amountContainer: {
     alignItems: 'center',

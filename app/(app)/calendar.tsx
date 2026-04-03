@@ -66,7 +66,6 @@ export default function CalendarScreen() {
   };
 
   const handleQuickAdd = (date: string) => {
-     // For demo, we add a mock bill. In production, this can open a modal.
      const newEvent = { 
         id: Math.random().toString(), 
         type: 'debt', 
@@ -78,6 +77,10 @@ export default function CalendarScreen() {
      updatedEvents[date].push(newEvent);
      setEvents(updatedEvents);
      Alert.alert('Sukses', 'Tagihan cepat berhasil ditambahkan ke tanggal ' + date);
+  };
+
+  const handleWhatsApp = (eventTitle: string, amount: number) => {
+    Alert.alert('Simulasi WhatsApp', `Terbuka WhatsApp dengan draf:\n\n"Halo, batas waktu untuk bayar ${eventTitle} sebesar ${formatCurrency(amount)} nih. Jangan lupa ya!"`);
   };
 
 
@@ -155,14 +158,27 @@ export default function CalendarScreen() {
         </View>
         {selectedEvents.length > 0 ? selectedEvents.map(event => (
             <View key={event.id} style={styles.eventCard}>
-              <View style={[styles.eventIcon, { backgroundColor: event.type === 'debt' ? Colors.danger + '20' : Colors.secondary + '20' }]}>
-                <Feather name={event.type === 'debt' ? 'arrow-up-right' : 'arrow-down-left'} size={20} color={event.type === 'debt' ? Colors.danger : Colors.secondary} />
-              </View>
-              <View style={{ flex: 1 }}><Text style={styles.eventTitle}>{event.title}</Text><Text style={styles.eventSubtitle}>{event.type === 'debt' ? 'Keluar' : 'Masuk'}</Text></View>
-              <View style={styles.eventActionArea}>
+              <View style={styles.eventCardTop}>
+                <View style={[styles.eventIcon, { backgroundColor: event.type === 'debt' ? Colors.danger + '20' : Colors.secondary + '20' }]}>
+                  <Feather name={event.type === 'debt' ? 'arrow-up-right' : 'arrow-down-left'} size={20} color={event.type === 'debt' ? Colors.danger : Colors.secondary} />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.eventTitle}>{event.title}</Text>
+                  <Text style={styles.eventSubtitle}>{event.type === 'debt' ? 'Keluar' : 'Masuk'}</Text>
+                </View>
                 <Text style={[styles.eventAmount, { color: event.type === 'debt' ? Colors.danger : Colors.secondary }]}>{formatCurrency(event.amount)}</Text>
-                <TouchableOpacity onPress={() => handleDeleteEvent(selectedDate, event.id)} style={styles.trashBtn}>
-                    <Feather name="trash-2" size={18} color={Colors.danger} />
+              </View>
+              
+              <View style={styles.eventActionArea}>
+                {event.type === 'receivable' && (
+                  <TouchableOpacity onPress={() => handleWhatsApp(event.title, event.amount)} style={styles.waBtn}>
+                    <Feather name="message-circle" size={16} color="#fff" />
+                    <Text style={styles.waBtnText}>Tagih via WA</Text>
+                  </TouchableOpacity>
+                )}
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity onPress={() => handleDeleteEvent(selectedDate, event.id)} style={styles.iconBtn}>
+                    <Feather name="trash-2" size={18} color={Colors.textMuted} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -209,13 +225,16 @@ const styles = StyleSheet.create({
   detailsHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   detailsTitle: { fontSize: 18, fontWeight: 'bold', color: Colors.text },
   addBtn: { padding: 4 },
-  eventCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.card, padding: 18, borderRadius: 24, marginBottom: 14, borderWidth: 1, borderColor: Colors.border },
+  eventCard: { flexDirection: 'column', backgroundColor: Colors.card, padding: 18, borderRadius: 24, marginBottom: 14, borderWidth: 1, borderColor: Colors.border },
+  eventCardTop: { flexDirection: 'row', alignItems: 'center' },
   eventIcon: { width: 48, height: 48, borderRadius: 14, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
   eventTitle: { fontSize: 16, fontWeight: 'bold', color: Colors.text },
   eventSubtitle: { fontSize: 12, color: Colors.textMuted },
-  eventActionArea: { alignItems: 'flex-end', gap: 4 },
+  eventActionArea: { flexDirection: 'row', alignItems: 'center', marginTop: 16, paddingTop: 16, borderTopWidth: 1, borderTopColor: Colors.border },
   eventAmount: { fontSize: 16, fontWeight: 'bold' },
-  trashBtn: { padding: 4, marginTop: 4 },
+  iconBtn: { padding: 8, backgroundColor: Colors.background, borderRadius: 12 },
+  waBtn: { flexDirection: 'row', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12, backgroundColor: '#10B981', borderRadius: 12, gap: 6 },
+  waBtnText: { color: '#fff', fontSize: 12, fontWeight: 'bold' },
   emptyContainer: { alignItems: 'center', marginTop: 48, opacity: 0.5 },
   emptyText: { color: Colors.text, fontSize: 16 },
 });

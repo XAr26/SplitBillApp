@@ -52,6 +52,13 @@ export default function SettingsScreen() {
           </View>
           <Text style={styles.profileName}>Aris Styawa</Text>
           <Text style={styles.profileEmail}>aris@example.com</Text>
+          
+          <View style={styles.badgeContainer}>
+            <View style={styles.badgeIconBg}>
+              <Feather name="award" size={14} color="#F59E0B" />
+            </View>
+            <Text style={styles.badgeText}>Sultan Mabar (Level 4)</Text>
+          </View>
         </View>
 
         {/* Account Section */}
@@ -59,6 +66,8 @@ export default function SettingsScreen() {
           <Text style={styles.sectionHeader}>Akun</Text>
           <View style={styles.card}>
             <SettingItem icon="user" label="Edit Profil" />
+            <View style={styles.divider} />
+            <SettingItem icon="credit-card" label="Metode Pembayaran (QRIS)" value="Selesai Diatur" color={Colors.secondary} />
             <View style={styles.divider} />
             <SettingItem icon="lock" label="Ubah Kata Sandi" />
             <View style={styles.divider} />
@@ -175,6 +184,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.textMuted,
     marginTop: 4,
+  },
+  badgeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.card,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: '#F59E0B50',
+  },
+  badgeIconBg: {
+    backgroundColor: '#F59E0B20',
+    padding: 4,
+    borderRadius: 10,
+    marginRight: 6,
+  },
+  badgeText: {
+    color: '#F59E0B',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   section: {
     marginBottom: 24,
